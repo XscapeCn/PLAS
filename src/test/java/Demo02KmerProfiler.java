@@ -65,7 +65,7 @@ public class Demo02KmerProfiler {
 
     public static void main(String[] args) throws IOException {
         List<String> res = new ArrayList<>();
-//        BufferedReader br = new BufferedReader(new FileReader("src/test.fq"));
+//        BufferedReader br = new BufferedReader(new FileReader("src/Box.fq"));
 //        String str;
 //        while ((str = br.readLine())!=null){
 //            res.add(str);

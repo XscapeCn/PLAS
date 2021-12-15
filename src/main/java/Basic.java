@@ -129,8 +129,8 @@ public class Basic {
             List<String> tempRes = new ArrayList<>();
             List<Integer> tempPos = new ArrayList<>();
             while (i < read.length()-miniLength){
-                String test = read.substring(i, i+miniLength);
-                String s = miniMap.get(test);
+                String Box = read.substring(i, i+miniLength);
+                String s = miniMap.get(Box);
                 if (s == null){
                     i++;
                 }else {
@@ -200,7 +200,7 @@ public class Basic {
 
 //    public static void main(String[] args) throws IOException {
 //        long startTime=System.currentTimeMillis();   //获取开始时间
-//        List<String> rawReads = IOUtils.getFastaReader("src/test.fq");
+//        List<String> rawReads = IOUtils.getFastaReader("src/Box.fq");
 //        int length = 10;
 //        double frequency = 0.0006;
 //
@@ -218,8 +218,8 @@ public class Basic {
 //            List<String> tempRes = new ArrayList<>();
 //            List<Integer> tempPos = new ArrayList<>();
 //            while (i < read.length()-length){
-//                String test = read.substring(i, i+length);
-//                String s = miniMap.get(test);
+//                String Box = read.substring(i, i+length);
+//                String s = miniMap.get(Box);
 //                if (s == null){
 //                    i++;
 //                }else {

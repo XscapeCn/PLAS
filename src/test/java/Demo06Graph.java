@@ -9,7 +9,7 @@ public class Demo06Graph {
 
     public static void main(String[] args) throws IOException {
         long startTime=System.currentTimeMillis();   //获取开始时间
-        List<String> res = IOUtils.getFastaReader("src/test.fq");
+        List<String> res = IOUtils.getFastaReader("src/Box.fq");
 //        System.out.println(res.get(res.size()-1));
 
         BufferedWriter simplifyWriter = IOUtils.getTextWriter("E:/WSL/task/testForFastaReader2/simplify-reads.fa");
@@ -36,8 +36,8 @@ public class Demo06Graph {
             List<String> tempRes = new ArrayList<>();
             List<Integer> tempPos = new ArrayList<>();
             while (i < tmp.length()-length){
-                String test = tmp.substring(i, i+length);
-                String s = miniMap.get(test);
+                String Box = tmp.substring(i, i+length);
+                String s = miniMap.get(Box);
                 if (s == null){
                     i++;
                 }else {

@@ -33,8 +33,8 @@ public class Demo05TestTime {
             int i = 0;
             List<String> tempRes = new ArrayList<>();
             while (i < tmp.length()-length){
-                String test = tmp.substring(i,i+length);
-                String s = miniMap.get(test);
+                String Box = tmp.substring(i,i+length);
+                String s = miniMap.get(Box);
                 if (s == null){
                     i++;
                 }else {

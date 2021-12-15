@@ -4,7 +4,7 @@ public class Demo03SimulateReadsFromFa {
 
     public static void main(String[] args) throws IOException {
         String inFile = "E:/WSL/task/testForFastaReader/complete.fa";
-        String outFile = "src/test.fq";
+        String outFile = "src/Box.fq";
         int X = 40;
         int readsLength = 10000;
 
