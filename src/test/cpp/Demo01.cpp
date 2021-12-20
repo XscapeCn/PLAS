@@ -6,85 +6,73 @@
 #include <iostream>
 #include <list>
 #include <utility>
-
+#include <vector>
 using namespace std;
 
-int test1(int i, int i1);
-void bubbleSort(int *arr, int len);
+void printVector(vector<int>& v) {
 
-
-void printArray(int * arr, int len){
-    for (int i = 0; i < len; ++i) {
-        cout << arr[i] << endl;
+    for (vector<int>::iterator it = v.begin(); it != v.end(); it++) {
+        cout << *it << " ";
     }
+    cout << endl;
 }
 
-class Box{
-public:
-    int a;
-    int b;
-
-    void print();
-    Box(int a, int b);
-};
-
-Box::Box(int aa, int bb) {
-    a=aa;
-    b=bb;
-}
-
-void Box::print() {
-    cout << a <<"\n" << b << endl;
-}
-
-class PhoneNumber{};
-
-
-class ABEntry{
-public:ABEntry(std::string  name, std::string  address, const std::list<PhoneNumber>& phones);
-
-private:
-    std::string theName;
-    string theAddress;
-    std::list<PhoneNumber> thePhones;
-    int numTImesConsulted;
-
-};
-
-ABEntry::ABEntry(std::string  name, std::string address, const std::list<PhoneNumber> &phones)
-    :theName(std::move(name)),
-    theAddress(std::move(address)),
-    thePhones(),
-    numTImesConsulted(0){}
-
-int main(){
-
-    int arr[10] = {3,6,4,5,2,7,1,9,8,10};
-    int len = sizeof(arr)/sizeof(arr[0]);
-    bubbleSort(arr, len);
-    printArray(arr,len);
-
-//    std::cout << test1(10,8)<< endl;
-
-}
-
-int test1(int i, int i1) {
-    int res;
-    res = i+i1;
-    return res;
-
-}
-
-void bubbleSort(int * arr, int len){
-    for (int i = 0; i < len-1; ++i) {
-        for (int j = 0; j < len-1-i; ++j) {
-            if (arr[j] > arr[j+1]){
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
+void test01()
+{
+    vector<int>v1;
+    for (int i = 0; i < 10; i++)
+    {
+        v1.push_back(i);
     }
+    printVector(v1);
+
+    vector<int>v2;
+    for (int i = 10; i > 0; i--)
+    {
+        v2.push_back(i);
+    }
+    printVector(v2);
+
+    //互换容器
+    cout << "swap then" << endl;
+    v1.swap(v2);
+    printVector(v1);
+    printVector(v2);
 }
+
+void test02()
+{
+    vector<int> v;
+    for (int i = 0; i < 100000; i++) {
+        v.push_back(i);
+    }
+
+    cout << "ca:" << v.capacity() << endl;
+    cout << "si" << v.size() << endl;
+
+    v.resize(3);
+
+    cout << "ca:" << v.capacity() << endl;
+    cout << "si:" << v.size() << endl;
+
+    //收缩内存
+    v.shrink_to_fit(); //匿名对象
+
+    cout << "ca:" << v.capacity() << endl;
+    cout << "si" << v.size() << endl;
+}
+
+int main() {
+
+    test01();
+
+    test02();
+
+//    system("pause");
+
+    return 0;
+}
+
+
 
 
