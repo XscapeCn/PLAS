@@ -1,5 +1,5 @@
 //
-// Created by Song on 2021/12/15.
+// Created by Song Xu on 2021/12/15.
 //
 
 #include "Demo01.h"
@@ -7,6 +7,7 @@
 #include <list>
 #include <utility>
 #include <vector>
+#include "zlib.h"
 using namespace std;
 
 void printVector(vector<int>& v) {
@@ -33,7 +34,6 @@ void test01()
     }
     printVector(v2);
 
-    //互换容器
     cout << "swap then" << endl;
     v1.swap(v2);
     printVector(v1);
@@ -55,21 +55,23 @@ void test02()
     cout << "ca:" << v.capacity() << endl;
     cout << "si:" << v.size() << endl;
 
-    //收缩内存
-    v.shrink_to_fit(); //匿名对象
+//    v.shrink_to_fit();
 
     cout << "ca:" << v.capacity() << endl;
     cout << "si" << v.size() << endl;
 }
 
 int main() {
-
     test01();
-
     test02();
 
-//    system("pause");
-
+    gzFile dfp = gzopen("src/test.fq", "r");
+    if (dfp == 0)
+    {
+        fprintf(stderr, "[ERROR] Cannot find the input read file: \n");
+        exit(0);
+    }
+    gzclose(dfp);
     return 0;
 }
 

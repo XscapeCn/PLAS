@@ -25,7 +25,7 @@ public class Basic {
     int boo = 0;
 
     public static void main(String[] args) {
-        new Basic("E:/WSL/task/asb/plasmid/123_filtered_ccs.fa", 10, 0.0006, 1);
+        new Basic("E:/WSL/task/testForFastaReader3/te.fq", 10, 0.0006, 1);
     }
 
     public Basic(String inFile, int miniLength, double frequency, int boo){
@@ -41,7 +41,7 @@ public class Basic {
         long startTime=System.currentTimeMillis();   //获取开始时间
 
         //Fasta\q -> Reads
-        this.rawReads = IOUtils.getFastaReader(inFile);
+        this.rawReads = IOUtils.getFastqReader(inFile);
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("GetFasta running time："+(endTime-startTime)+"ms");
         //Generate minimizer
@@ -88,6 +88,13 @@ public class Basic {
         if (boo == 1){
             writeAllFile();
         }
+
+
+//        List<String> fastaReader = IOUtils.getFastaReader("C:/Users/lenovo/Desktop/complete.fa");
+//        convertToSim(fastaReader,miniLength,miniMap);
+
+
+
     }
 
 
@@ -99,11 +106,14 @@ public class Basic {
         BufferedWriter posWriter = IOUtils.getTextWriter(simPosFile.getPath());
 
         try{
+            System.out.println(simReads.size());
             for (List<String> re : simReads) {
                 for (String s : re) {
                     simplifyWriter.write(s);
+//                    System.out.println(s);
                 }
                 simplifyWriter.newLine();
+//                System.out.println();
             }
             simplifyWriter.close();
 
@@ -117,13 +127,10 @@ public class Basic {
         }catch (Exception e){
             System.exit(1);
         }
-
-
-
-
     }
     public void convertToSim(){
         long startTime=System.currentTimeMillis();   //获取开始时间
+        System.out.println(rawReads.size());
         for (String read:rawReads) {
             int i = 0;
             List<String> tempRes = new ArrayList<>();
@@ -145,6 +152,30 @@ public class Basic {
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("ConvertToSim running time："+(endTime-startTime)+"ms");
 
+    }
+
+    public static void  convertToSim(List<String> fs, int miniLength, Map<String,String> miniMap){
+        long startTime=System.currentTimeMillis();   //获取开始时间
+        StringBuilder sb = new StringBuilder();
+
+        for (String read:fs) {
+            System.out.println(read);
+            int i = 0;
+            while (i < read.length()-miniLength){
+                String Box = read.substring(i, i+miniLength);
+                String s = miniMap.get(Box);
+                if (s == null){
+                    i++;
+                }else {
+                    sb.append(s);
+                    i += miniLength;
+                }
+            }
+        }
+        System.out.println(sb);
+        long endTime=System.currentTimeMillis(); //获取结束时间
+
+        System.out.println("ConvertToSim running time："+(endTime-startTime)+"ms");
     }
 
     public void convertToKmer(){

@@ -15,6 +15,24 @@ import java.util.zip.GZIPOutputStream;
  */
 public class IOUtils {
 
+    public static String getReverseCom(String s){
+        StringBuilder sb = new StringBuilder();
+        for (int i = s.length(); i > 0 ; i--) {
+            if (s.charAt(i-1) == 'A'){
+                sb.append("T");
+            }else if (s.charAt(i-1) == 'T'){
+                sb.append("A");
+
+            }else if (s.charAt(i-1) == 'C'){
+                sb.append("G");
+
+            }else if (s.charAt(i-1) == 'G'){
+                sb.append("C");
+            }
+        }
+        return sb.toString();
+    }
+
     public static BufferedReader getTextGzipReader (String infileS) {
         BufferedReader br = null;
         try {
@@ -69,16 +87,16 @@ public class IOUtils {
             StringBuilder sb = new StringBuilder();
             while ((str = br.readLine()) != null){
                 if (!str.startsWith(">")){
-                    sb = new StringBuilder();
                     sb.append(str);
-                    res.add(sb.toString());
 
+                }else{
+                    res.add(sb.toString());
+                    res.add(getReverseCom(sb.toString()));
+                    sb = new StringBuilder();
                 }
-//                else {
-//                    res.add(sb.toString());
-//                    sb = new StringBuilder();
-//                }
             }
+            res.add(sb.toString());
+            res.add(getReverseCom(sb.toString()));
         }
         catch (Exception e) {
             e.printStackTrace();
