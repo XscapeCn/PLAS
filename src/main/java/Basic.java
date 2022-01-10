@@ -25,7 +25,7 @@ public class Basic {
     int boo = 0;
 
     public static void main(String[] args) {
-        new Basic("E:/WSL/task/testForFastaReader3/te.fq", 10, 0.0006, 1);
+        new Basic("E:/WSL/task/testForFastaReader2/reads-0.00.fa", 10, 0.0006, 1);
     }
 
     public Basic(String inFile, int miniLength, double frequency, int boo){
@@ -41,12 +41,64 @@ public class Basic {
         long startTime=System.currentTimeMillis();   //获取开始时间
 
         //Fasta\q -> Reads
-        this.rawReads = IOUtils.getFastqReader(inFile);
+        this.rawReads = IOUtils.getFastaReader(inFile);
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("GetFasta running time："+(endTime-startTime)+"ms");
         //Generate minimizer
         GetMiniHashMap mn = new GetMiniHashMap(miniLength,frequency);
         miniMap = mn.getMini();
+
+
+        List<String> tempRes = new ArrayList<>();
+        List<Integer> tempPos = new ArrayList<>();
+        int i= 0;
+        System.out.println("===========");
+//        System.out.println(testFa.get(3).length());
+        List<String> testFa = IOUtils.getFastaReader("E:/WSL/task/testForFastaReader2/complete.fa");
+        List<String> hifiFa = IOUtils.getFastaReader("E:/WSL/task/testForFastaReader2/hifi.fa");
+
+
+        while (i < testFa.get(2).length()-miniLength){
+            String Box = testFa.get(2).substring(i, i+miniLength);
+            String s = miniMap.get(Box);
+            if (s == null){
+                i++;
+            }else {
+                tempPos.add(i);
+                i += miniLength;
+                tempRes.add(s);
+            }
+        }
+        for (String a: tempRes
+        ) {
+
+            System.out.print(a);
+        }
+        System.out.println();
+
+
+        while (i < hifiFa.get(2).length()-miniLength){
+            String Box = hifiFa.get(2).substring(i, i+miniLength);
+            String s = miniMap.get(Box);
+            if (s == null){
+                i++;
+            }else {
+                tempPos.add(i);
+                i += miniLength;
+                tempRes.add(s);
+            }
+        }
+        for (String a: tempRes
+        ) {
+
+            System.out.print(a);
+        }
+        System.out.println();
+
+        System.out.println("+++++++++++");
+
+
+
         //Convert Reads to simReads
         convertToSim();
         //simReads -> simKmer
@@ -54,22 +106,23 @@ public class Basic {
         //De Brujn
         long startTime2=System.currentTimeMillis();   //获取开始时间
 
+
         simContigs = euler(new ArrayList<>(kmerSequence.keySet()));
-        long endTime2=System.currentTimeMillis(); //获取结束时间
+        long endTime2 = System.currentTimeMillis(); //获取结束时间
         System.out.println("euler running time："+(endTime2-startTime2)+"ms");
         //Convert to base level
-        long startTime3=System.currentTimeMillis();   //获取开始时间
-        int ii=1;
+        long startTime3 = System.currentTimeMillis();   //获取开始时间
+        int ii = 1;
         for (String cont:simContigs
              ) {
-            System.out.println("Contig"+ ii+": ");
+            System.out.println("Contig"+ ii + ": ");
             System.out.println(cont);
             ii++;
         }
 
         contigs = convertToBaseLevel(simContigs, kmerSequence);
-        long endTime3=System.currentTimeMillis(); //获取结束时间
-        System.out.println("converToBase running time："+(endTime3-startTime3)+"ms");
+        long endTime3 = System.currentTimeMillis(); //获取结束时间
+        System.out.println("converToBase running time：" + (endTime3-startTime3) + "ms");
 
         //init file name
         File inf = new File(inFile);
@@ -149,13 +202,13 @@ public class Basic {
             simReads.add(tempRes);
             simPos.add(tempPos);
         }
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("ConvertToSim running time："+(endTime-startTime)+"ms");
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("ConvertToSim running time："+ (endTime - startTime) + "ms");
 
     }
 
     public static void  convertToSim(List<String> fs, int miniLength, Map<String,String> miniMap){
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        long startTime = System.currentTimeMillis();   //获取开始时间
         StringBuilder sb = new StringBuilder();
 
         for (String read:fs) {
@@ -175,11 +228,11 @@ public class Basic {
         System.out.println(sb);
         long endTime=System.currentTimeMillis(); //获取结束时间
 
-        System.out.println("ConvertToSim running time："+(endTime-startTime)+"ms");
+        System.out.println("ConvertToSim running time：" + (endTime-startTime) + "ms");
     }
 
     public void convertToKmer(){
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        long startTime = System.currentTimeMillis();   //获取开始时间
 
         List<String> tmpList = new ArrayList<>();
         for (List<String> re : simReads) {
@@ -199,12 +252,12 @@ public class Basic {
                 if (i1 != 0){
                     i2 = simPos.get(row).get(i1);
                 }else {
-                    i2=0;
+                    i2 = 0;
                 }
 //                    String end = tmp.substring(12);
                 int e1 = i1 + 6 ;
                 if (simPos.get(row).size() == e1){
-                    e1 = e1 -1;
+                    e1 = e1 - 1;
                 }
                 if (kmer.contains(tmp)){
                     Integer value = kmerCount.get(tmp);
@@ -224,8 +277,8 @@ public class Basic {
             }
             row++;
         }
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("ConvertToKmer running time："+(endTime-startTime)+"ms");
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("ConvertToKmer running time：" + (endTime-startTime) + "ms");
     }
 
 
@@ -369,8 +422,8 @@ public class Basic {
 //
 //    }
 
-    public static void getReadsInContigs(List<String> simContigs,List<List<String>> simReads){
-        for (String contig: simContigs) {
+    public static void getReadsInContigs(List<String> simContigs, List<List<String>> simReads){
+        for (String contig : simContigs) {
             List<Integer> tempReads  = new ArrayList<>();
             for (List<String> sim:simReads) {
                 StringBuilder s = new StringBuilder();
@@ -470,6 +523,7 @@ public class Basic {
         }
         return res.toString();
     }
+
 
     public static List<String> convertToBaseLevel(List<String> simContigs, HashMap<String,String> kmerSequence){
         List<String> res = new ArrayList<>();
