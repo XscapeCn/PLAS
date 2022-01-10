@@ -98,7 +98,7 @@ mat matrix(char* a, char* b, int match_score=3, int gap_cost=2){
 
 // Method 3 to create 2D array
     int row = strlen(a) + 1;
-    int col = strlen(a) + 1;
+    int col = strlen(b) + 1;
 
     int ** arr = new int * [row];
     for (int i = 0; i < (row); i++){
@@ -166,25 +166,33 @@ res* traceback(mat ma, char * b, string b_ = "", int old_i = 0){
     if(ma.arr[tmp[0]][tmp[1]] == 0){
         res re = {b_, j};
         res* p = &re;
+//        cout << p << endl;
+        cout << p->b_ << endl;
         return p;
     }
     if(old_i - i >1){
-        string tt = "-";
-        b_ = b[j-1] + tt + b_;
+//        string tt = "-";
+        b_ = b[j-1] + (string) "-" + b_;
     }else{
         b_ = b[j-1] + b_;
     }
+//    cout << b_ << endl;
     mat ar = subMatrix(ma, i , j);
     return traceback(ar, b, b_, i);
 }
 
 res* smithWaterman(char * a, char * b){
     mat ma = matrix(a,b);
+//    printMatrix(ma);
+//    cout << ma.row << endl;
+//    cout << ma.col << endl;
     mat bbc = transfer_matrix(ma);
+//    printMatrix(bbc);
+
     return traceback(bbc,b);
 }
 
 int main(){
-    res * re = smithWaterman("ATACG", "ATCGA");
-    cout << re->b_ << endl;
+//    res * re = smithWaterman("ATACG", "ATCGA");
+    res * re = smithWaterman("ATACGAAATTTCCCAAATTTTTTCCCAAATTT", "ATCGAAAATTTCCCAAATTTTTTCCCAAATTT");
 }
