@@ -195,4 +195,5 @@ res* smithWaterman(char * a, char * b){
 int main(){
 //    res * re = smithWaterman("ATACG", "ATCGA");
     res * re = smithWaterman("ATACGAAATTTCCCAAATTTTTTCCCAAATTT", "ATCGAAAATTTCCCAAATTTTTTCCCAAATTT");
+    //AT-CGAAATTTCCCAAATTTTTTCCCAAATTT
 }
