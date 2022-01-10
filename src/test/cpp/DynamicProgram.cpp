@@ -10,17 +10,6 @@
 
 using namespace std;
 
-typedef struct {
-    int ** arr;
-    int row;
-    int col;
-} mat;
-
-typedef struct {
-    string  b_;
-    int i;
-} res;
-
 void printLCS(dp* dp1){
     for (int i = 1; i < dp1->s1.size() / sizeof(dp1->s1[0]); ++i) {
         for (int j = 1; j < dp1->s2.size() / sizeof(dp1->s2[0]); ++j) {
