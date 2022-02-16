@@ -42,6 +42,8 @@ set(SOURCE_FILES src/test/cpp/hifi/Assembly.cpp
         src/test/cpp/hifi/Trio.cpp)
 
 add_executable(asb src/test/cpp/Demo01.cpp)
+add_executable(par src/test/cpp/IOpractise.cpp)
+add_executable(con src/test/cpp/Concurrent.cpp)
 
 add_executable(asb2 src/test/cpp/DynamicProgram.cpp src/test/cpp/DynamicProgram.h)
 
@@ -50,4 +52,5 @@ add_executable(hifi ${SOURCE_FILES})
 
 target_link_libraries(hifi ${ZLIB_LIBRARIES})
 target_link_libraries(hifi Threads::Threads)
+target_link_libraries(par Threads::Threads)
 target_link_libraries(asb ${ZLIB_LIBRARIES})

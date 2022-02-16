@@ -16,13 +16,13 @@ public class GetMiniHashMap {
         this.randomMini(acid, 0, len);
     }
 
-    public HashMap<String, String> getMini() {
+    public HashMap<String, String> getMini(){
         System.out.println("Counts of minimizer: " + mini.size());
         return mini;
     }
 
-    public void randomMini(char[] acid, int curnum, int maxnum) {
-        if (curnum == maxnum) {
+    public void randomMini(char[] acid, int curnum, int maxnum){
+        if (curnum == maxnum){
             StringBuilder sb = new StringBuilder();
             for (Character str:s) {sb.append(str);}
             cnt++;

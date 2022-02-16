@@ -10,6 +10,7 @@
 #include "zlib.h"
 #include <stdio.h>
 #include <cstring>
+#include <memory>
 #include "DynamicProgram.h"
 using namespace std;
 
@@ -117,6 +118,8 @@ int main() {
         cout << "y" << endl;
 
     }
+    std::shared_ptr<int> p(new int(42));
+
 
 //    test01();
 //    test02();
@@ -137,7 +140,7 @@ int main() {
 //    return 0;
 //char * s2 = "string123333";
 //    cout << s2[2]<< endl;
-};
+}
 
 
 

@@ -5,27 +5,15 @@
 #include <algorithm>
 #include <iostream>
 #include <cstring>
-#include "stdio.h"
-#include "stdlib.h"
+#include <memory>
+#include <vector>
 
 using namespace std;
-
-void printLCS(dp* dp1){
-    for (int i = 1; i < dp1->s1.size() / sizeof(dp1->s1[0]); ++i) {
-        for (int j = 1; j < dp1->s2.size() / sizeof(dp1->s2[0]); ++j) {
-            int tmp =0;
-            if (dp1->s1[i-1] == dp1->s2[j-1]){
-                tmp = 1;}
-            dp1->arr[i][j] = maxX(dp1->arr[i - 1][j - 1] + tmp, dp1->arr[i - 1][j], dp1->arr[i][j - 1]);
-        }
-    }
-}
 
 int maxX(int a, int b, int c){
     int max = a;
     if(b>max) max=b;
     if(c>max) max=c;
-
     if (max > 0){
         return max;
     }else{
@@ -38,17 +26,8 @@ void printMatrix(mat ma){
         for (int j = 0; j < ma.col; ++j) {
             cout << ma.arr[i][j] << ",";
         }
-        cout << endl;
+        cout << "\n";
     }
-}
-
-void test(unsigned n){
-    int arr[n][n];
-    for (int i = 0; i < n; ++i) {
-        arr[i][0] = 2;
-        cout << arr[i][0] << endl;
-    }
-
 }
 
 mat transfer_matrix(mat ma){
@@ -73,9 +52,7 @@ mat subMatrix(mat ma, int idx, int idy){
     }
     mat res = {ar, idx, idy};
     return res;
-
 }
-
 
 mat matrix(char* a, char* b, int match_score=3, int gap_cost=2){
 /*
@@ -146,43 +123,42 @@ int* argMax(mat ma) {
     return res;
 }
 
-res* traceback(mat ma, char * b, string b_ = "", int old_i = 0){
-
+res* traceback(mat ma, char * b, vector<char> rs = vector<char>() , int old_i = 0, int old_j = 0){
     int* tmp = argMax(ma);
     int i = ma.row - tmp[0] - 1;
     int j = ma.col - tmp[1] - 1;
-
     if(ma.arr[tmp[0]][tmp[1]] == 0){
-        res re = {b_, j};
+        for (auto it = rs.end(); it != rs.begin(); it--) cout << *it;
+        std::string s(rs.begin(), rs.end());
+        res re = {s, j};
         res* p = &re;
-//        cout << p << endl;
-        cout << p->b_ << endl;
         return p;
+        //TODO: The address of the local variable may escape the function
     }
     if(old_i - i >1){
-//        string tt = "-";
-        b_ = b[j-1] + (string) "-" + b_;
+        int count = old_j - j;
+//        b_ = b[j-1] + tmpp + b_;
+        for (int k = 0; k < count; ++k) {
+            rs.push_back('-');
+        }
+        rs.push_back(b[j-1]);
+//        b_.append("-",-1).append(b[j-1],-1);
     }else{
-        b_ = b[j-1] + b_;
+//        b_ = b[j-1] + b_;
+        rs.push_back(b[j-1]);
     }
-//    cout << b_ << endl;
     mat ar = subMatrix(ma, i , j);
-    return traceback(ar, b, b_, i);
+    return traceback(ar, b, rs, i, j);
 }
 
 res* smithWaterman(char * a, char * b){
     mat ma = matrix(a,b);
-//    printMatrix(ma);
-//    cout << ma.row << endl;
-//    cout << ma.col << endl;
     mat bbc = transfer_matrix(ma);
-//    printMatrix(bbc);
-
     return traceback(bbc,b);
 }
 
 int main(){
-//    res * re = smithWaterman("ATACG", "ATCGA");
-    res * re = smithWaterman("ATACGAAATTTCCCAAATTTTTTCCCAAATTT", "ATCGAAAATTTCCCAAATTTTTTCCCAAATTT");
-    //AT-CGAAATTTCCCAAATTTTTTCCCAAATTT
+    res * re = smithWaterman("CAAAAACACAGACAATGGAAGCACGATGGAACCGCAAATATCGAAAAATAATAAGCT", "ACGATAACCGCAAATATCGAAAAATAATAAGCTTATGATATTTATTTTTATACTA");
+//    res * re = smithWaterman("ATCGTAC", "ATGTTAT");
+    //ACGAT--ACCGCAAATATCGAAAAATAATAAGC
 }
