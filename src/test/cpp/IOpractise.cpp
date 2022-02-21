@@ -3,12 +3,14 @@
 //
 #include <iostream>
 #include <cstdint>
+#include <vector>
 #include "IOpractise.h"
 #include <algorithm>
-
+#include <zlib.h>
 #include <cstring>
 #include <memory>
 #include <pthread.h>
+#include "kseq.h"
 
 using namespace std;
 
@@ -153,24 +155,84 @@ int load_All_reads(All_reads* r, char* read_file_name)
     return 1;
 }
 
+KSEQ_INIT(gzFile, gzread)
+
 int main(){
 
 //    load_All_reads(&R_inf, "/mnt/e/WSL/task/hifiasmTest/aa.ec.bin");
+    clock_t start1,start2,end1,end2;
 
-    pthread_t * n;
-    n = (pthread_t *) calloc(10, sizeof(pthread_t));
 
-    for (int i = 0; i < 10; ++i) {
-        pthread_create(&n[i], NULL, reinterpret_cast<void *(*)(void *)>(printaaa), reinterpret_cast<void *>(i));
+    gzFile fp = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/te.resample.fq", "r"); // STEP 2: open the file handler
+    kseq_t *seq = kseq_init(fp); // STEP 3: initialize seq
+
+    int l;
+    start1 = clock();
+    gzFile wf = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test1.gz", "w");
+    while ((l = kseq_read(seq)) >= 0) { // STEP 4: read sequence
+        gzwrite(wf, seq->name.s, strlen(seq->name.s));
+        gzwrite(wf, "\n", 1);
+        gzwrite(wf, seq->seq.s, strlen(seq->seq.s));
+        gzwrite(wf, "\n", 1);
+//        printf("name: %s\n", seq->name.s);
+//        if (seq->comment.l) printf("comment: %s\n", seq->comment.s);
+//        printf("seq: %s\n", seq->seq.s);
+//        if (seq->qual.l) printf("qual: %s\n", seq->qual.s);
     }
-    for (int i = 0; i < 10; ++i) {
-        pthread_join(n[i], 0);
+
+//    printf("return value: %d\n", l);
+    kseq_destroy(seq); // STEP 5: destroy seq
+    gzclose(fp);
+    gzclose(wf);
+    end1 = clock();
+
+    vector<char *> re;
+
+    start2 = clock();
+    gzFile fp2 = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/te.resample.fq", "r");
+    kseq_t *seq2 = kseq_init(fp2);
+    while ((l = kseq_read(seq2)) >= 0) { // STEP 4: read sequence
+        re.push_back(seq2->name.s);
+        re.push_back(seq2->seq.s);
+
+//        gzwrite(wf, seq->name.s, strlen(seq->name.s));
+//        gzwrite(wf, "\n", 1);
+//        gzwrite(wf, seq->seq.s, strlen(seq->seq.s));
+//        gzwrite(wf, "\n", 1);
+
+//        printf("name: %s\n", seq->name.s);
+//        if (seq->comment.l) printf("comment: %s\n", seq->comment.s);
+//        printf("seq: %s\n", seq->seq.s);
+//        if (seq->qual.l) printf("qual: %s\n", seq->qual.s);
     }
-    //
+
+    gzFile wf3 = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test2.gz", "w");
+
+    for (auto str : re) {
+//        cout << str << "\n" ;
+        gzwrite(wf3, str, strlen(str));
+        gzwrite(wf3, "\n", 1);
+    }
+
+    gzclose(wf3);
+    gzclose(fp2);
+    end2 = clock();
+
+    printf("The first time use %lus.\n", (int)(end1-start1)/CLOCKS_PER_SEC);
+    printf("The second time use %lus.", (int)(end2-start2)/CLOCKS_PER_SEC);
+
+    return (0);
+//    pthread_t * n;
+//    n = (pthread_t *) calloc(10, sizeof(pthread_t));
+//
+//    for (int i = 0; i < 10; ++i) {
+//        pthread_create(&n[i], NULL, reinterpret_cast<void *(*)(void *)>(printaaa), reinterpret_cast<void *>(i));
+//    }
+//    for (int i = 0; i < 10; ++i) {
+//        pthread_join(n[i], 0);
+//    }
 
 //    cout << R_inf.N_site[2];
-
-
 
 //    auto ** p  = new unsigned char*[2];
 //    for (int i = 0; i < 2; ++i) {
@@ -183,7 +245,7 @@ int main(){
 //    p[1]= (unsigned char *) "BUBBLE";
 //
 //
-////
+
 //    FILE* fp = fopen("/mnt/e/task/IPractice.txt", "w");
 //    for (int i = 0; i < 2; i++){
 //        if (p[i] != nullptr){
