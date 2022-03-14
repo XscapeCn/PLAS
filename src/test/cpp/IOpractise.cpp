@@ -168,12 +168,12 @@ int main(){
 
     int l;
     start1 = clock();
-    gzFile wf = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test1.gz", "w");
+//    gzFile wf = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test1.gz", "w");
     while ((l = kseq_read(seq)) >= 0) { // STEP 4: read sequence
-        gzwrite(wf, seq->name.s, strlen(seq->name.s));
-        gzwrite(wf, "\n", 1);
-        gzwrite(wf, seq->seq.s, strlen(seq->seq.s));
-        gzwrite(wf, "\n", 1);
+//        gzwrite(wf, seq->name.s, strlen(seq->name.s));
+//        gzwrite(wf, "\n", 1);
+//        gzwrite(wf, seq->seq.s, strlen(seq->seq.s));
+//        gzwrite(wf, "\n", 1);
 //        printf("name: %s\n", seq->name.s);
 //        if (seq->comment.l) printf("comment: %s\n", seq->comment.s);
 //        printf("seq: %s\n", seq->seq.s);
@@ -183,7 +183,7 @@ int main(){
 //    printf("return value: %d\n", l);
     kseq_destroy(seq); // STEP 5: destroy seq
     gzclose(fp);
-    gzclose(wf);
+//    gzclose(wf);
     end1 = clock();
 
     vector<char *> re;
@@ -206,15 +206,15 @@ int main(){
 //        if (seq->qual.l) printf("qual: %s\n", seq->qual.s);
     }
 
-    gzFile wf3 = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test2.gz", "w");
+//    gzFile wf3 = gzopen("/mnt/e/task/asb/src/test/cpp/hifi/test2.gz", "w");
 
     for (auto str : re) {
 //        cout << str << "\n" ;
-        gzwrite(wf3, str, strlen(str));
-        gzwrite(wf3, "\n", 1);
+//        gzwrite(wf3, str, strlen(str));
+//        gzwrite(wf3, "\n", 1);
     }
 
-    gzclose(wf3);
+//    gzclose(wf3);
     gzclose(fp2);
     end2 = clock();
 
