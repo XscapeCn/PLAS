@@ -1,10 +1,6 @@
 # PLAS: GPU-based minimizer-space de novo assembler
 
-
-
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ekimb/rust-mdbg)
-![GitHub last commit](https://img.shields.io/github/last-commit/ekimb/rust-mdbg)
-![GitHub](https://img.shields.io/github/license/ekimb/rust-mdbg)
+![GitHub](https://img.shields.io/github/license/XscapeCn/PLAS)
 
 
 
