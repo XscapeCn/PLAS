@@ -1,4 +1,4 @@
-# PLAS: GPU-based minimizer-space de novo assembler
+# PLAS: GPU-based de novo assembler
 
 ![GitHub](https://img.shields.io/github/license/XscapeCn/PLAS)
 
